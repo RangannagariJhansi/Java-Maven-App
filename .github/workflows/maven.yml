@@ -30,6 +30,17 @@ jobs:
     - name: Build with Maven
       run: mvn -B package --file pom.xml
 
-    # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
-   # - name: Update dependency graph
-    #  uses: advanced-security/maven-dependency-submission-action@571e99aab1055c2e71a1e2309b9691de18d6b7d6
+            
+    - name: zip for GitHub releases
+      shell: pwsh
+      run: |
+         Compress-Archive -Path  build\libs\*  -Destination ${{ github.event.repository.name }}.zip
+         ls
+    - name: Create Release and Upload Artifacts
+      uses: ncipollo/release-action@v1
+      with:
+        artifacts: ${{ github.event.repository.name }}.zip
+        tag: "${{ github.run_number }}"
+        name: "${{ github.run_number }}"
+        allowUpdates: true
+        replacesArtifacts: false
