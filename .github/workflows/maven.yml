@@ -27,8 +27,10 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
         cache: maven
+  
     - name: Build with Maven
       run: mvn -B package --file pom.xml
+      
     - name: listing
       run: ls -laRt
 
@@ -38,6 +40,7 @@ jobs:
       run: |
          Compress-Archive -Path  target\*  -Destination ${{ github.event.repository.name }}.zip
          ls
+  
     - name: Create Release and Upload Artifacts
       uses: ncipollo/release-action@v1
       with:
