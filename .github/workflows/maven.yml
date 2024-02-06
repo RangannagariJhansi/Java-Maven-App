@@ -30,6 +30,61 @@ jobs:
   
     - name: Build with Maven
       run: mvn -B package --file pom.xml
+      # Run unit tests
+    - name: Run Unit Tests
+      env:
+         ARTIFACTORY_TOKEN: ${{ secrets[env.ARTIFACTORY_TOKEN_SECRET_NAME] }}
+         ARTIFACTORY_USER: ${{ env.ARTIFACTORY_USER }}
+      shell: sh
+      run: mvn test
+    - name: Get Code Coverage File Path
+      shell: sh
+      run: |
+          echo CODE_COV_RESULTS_ARTIFACT=$(find . -iname "*jacocoTestReport.xml*") >> $GITHUB_ENV
+          echo ${{ env.CODE_COV_RESULTS_ARTIFACT }}
+          echo ${{ secrets.SONAR_PROJECT_KEY }}
+
+      # Find unit test results file and rename it
+    - name: Get Unit Test Results File Path and Rename
+      shell: sh
+      id: unit_test_file_name
+      run: |
+          mkdir unit-test-results
+          mv $(find . -iname "*TEST-*.xml*") unit-test-results
+           echo UNIT_TEST_RESULTS_XML=unit-test-results/*.xml >> $GITHUB_ENV
+           echo "UNIT_TEST_RESULTS_XML=${UNIT_TEST_RESULTS_XML}" >> $GITHUB_OUTPUT
+
+      # Create unit test results-report for easy developer review within GitHub ecosystem
+    - name: Create Unit Test Results Report
+      id: unit_test_report
+      uses: dorny/test-reporter@v1.6.0
+      if: success() || failure()
+      with:
+          name: Unit Test Results
+          path: ${{ env.UNIT_TEST_RESULTS_XML }}
+          reporter: java-junit
+          only-summary: 'false'
+          fail-on-error: 'true'   #Set True to enable Quality Gate
+
+      # Upload unit test results path for developer review and badge rendering
+    - name: Upload Unit Test Results Artifact for Badges
+      uses: actions/upload-artifact@v3
+      with:
+          name: unit-test-results
+          path: ${{ env.UNIT_TEST_RESULTS_XML }}
+    - name: "SonarQube Setup"
+      uses: warchant/setup-sonar-scanner@v3
+    - name: "Sonar Scanning"
+      run: sonar-scanner
+            -Dsonar.host.url=${{ secrets.SONAR_HOST_URL }}
+            -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+            -Dsonar.projectKey=${{ secrets.SONAR_PROJECT_KEY }}
+            -Dsonar.projectVersion=${{steps.build_number.outputs.build_version}}
+            -Dsonar.scm.provider=tfvc
+            -Dsonar.tfvc.collectionuri="https://workaround-tfvc-plugin-issue/DefaultCollection"
+            -Dsonar.language=java
+            -Dsonar.exclusions=**/*.java
+            -Dsonar.qualitygate.wait=true    
       
     - name: listing
       run: ls -laRt
