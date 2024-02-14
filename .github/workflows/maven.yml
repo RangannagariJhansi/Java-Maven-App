@@ -37,7 +37,7 @@ jobs:
   
     - name: Build with Maven
       run: mvn -B package --file pom.xml
-           mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar
+      ##B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar
       # Run unit tests
     - name: Run Unit Tests
       env:
