@@ -96,7 +96,7 @@ jobs:
           chmod u+x "${SONAR_FOLDER}/bin/sonar-scanner"
           echo "PATH=\"${PATH}:${PWD}/${SONAR_FOLDER}/bin\"" >> $GITHUB_ENV
           source $GITHUB_ENV
-          /home/runner/work/Java-Maven-App/Java-Maven-App/sonar-scanner-5.0.1.3006-linux/bin/sonar-scanner -Dsonar.login=${{ secrets.JAVA_TOKEN }} -Dsonar.export.results=sonar-results.xml -X
+          /home/runner/work/Java-Maven-App/Java-Maven-App/sonar-scanner-5.0.1.3006-linux/bin/sonar-scanner -Dsonar.login=${{ secrets.JAVA_TOKEN }} -Dsonar.exclusions=**.java -Dsonar.export.results=sonar-results.xml -X
           ls -lrt
     # - name: "SonarQube Setup"
     #   uses: warchant/setup-sonar-scanner@v3
