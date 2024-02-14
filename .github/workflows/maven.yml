@@ -39,7 +39,7 @@ jobs:
   
     - name: Build with Maven
       run: mvn -B package --file pom.xml
-      ##B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar
+      
       # Run unit tests
     - name: Run Unit Tests
       env:
@@ -98,24 +98,10 @@ jobs:
           source $GITHUB_ENV
           /home/runner/work/Java-Maven-App/Java-Maven-App/sonar-scanner-5.0.1.3006-linux/bin/sonar-scanner -Dsonar.login=${{ secrets.JAVA_TOKEN }} -Dsonar.exclusions=**.java -Dsonar.export.results=sonar-results.xml -X
           ls -lrt
-    # - name: "SonarQube Setup"
-    #   uses: warchant/setup-sonar-scanner@v3
-    # - name: "Sonar Scanning"
-    #   run: sonar-scanner -X 
-    #         -Dsonar.host.url=${{ secrets.SONAR_HOST_URL }}
-    #         -Dsonar.login=${{ secrets.SONAR_TOKEN }}
-    #         -Dsonar.projectKey=${{ secrets.SONAR_PROJECT_KEY }}
-    #         -Dsonar.projectVersion=${{steps.build_number.outputs.build_version}}
-    #         -Dsonar.scm.provider=tfvc
-    #         -Dsonar.tfvc.collectionuri="https://workaround-tfvc-plugin-issue/DefaultCollection"
-    #         -Dsonar.language=java
-    #         -Dsonar.inclusions=**/*.jar
-    #         -Dsonar.qualitygate.wait=true    
-      
+    
     - name: listing
       run: ls -laRt
 
-            
     - name: zip for GitHub releases
       shell: pwsh
       run: |
