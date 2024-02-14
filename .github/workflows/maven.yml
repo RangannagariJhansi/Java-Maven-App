@@ -84,7 +84,7 @@ jobs:
         path: ${{ env.UNIT_TEST_RESULTS_XML }}
     - name: Download and Set Up SonarScanner
       run: |
-          echo 'export SONAR_VERSION="4.6.2.2472-linux"' >> $GITHUB_ENV
+          echo 'export SONAR_VERSION="5.0.1.3006-linux"' >> $GITHUB_ENV
           echo 'export SONAR_CLI="sonar-scanner-cli-${SONAR_VERSION}"' >> $GITHUB_ENV
           echo 'export SONAR_FOLDER="sonar-scanner-${SONAR_VERSION}"' >> $GITHUB_ENV
           source $GITHUB_ENV
