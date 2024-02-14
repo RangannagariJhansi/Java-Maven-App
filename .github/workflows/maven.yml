@@ -80,9 +80,8 @@ jobs:
     - name: Upload Unit Test Results Artifact for Badges
       uses: actions/upload-artifact@v3
       with:
-          name: unit-test-results
-          path: ${{ env.UNIT_TEST_RESULTS_XML }}
-		  
+        name: unit-test-results
+        path: ${{ env.UNIT_TEST_RESULTS_XML }}
     - name: Download and Set Up SonarScanner
       run: |
           echo 'export SONAR_VERSION="4.6.2.2472-linux"' >> $GITHUB_ENV
