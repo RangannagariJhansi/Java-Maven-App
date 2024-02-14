@@ -90,7 +90,6 @@ jobs:
             -Dsonar.scm.provider=tfvc
             -Dsonar.tfvc.collectionuri="https://workaround-tfvc-plugin-issue/DefaultCollection"
             -Dsonar.language=java
-            -Dsonar.exclusions=**/*.java
             -Dsonar.inclusions=**/*.jar
             -Dsonar.qualitygate.wait=true    
       
