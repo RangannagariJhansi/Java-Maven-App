@@ -91,6 +91,7 @@ jobs:
             -Dsonar.tfvc.collectionuri="https://workaround-tfvc-plugin-issue/DefaultCollection"
             -Dsonar.language=java
             -Dsonar.exclusions=**/*.java
+            -Dsonar.inclusions=**/*.jar
             -Dsonar.qualitygate.wait=true    
       
     - name: listing
